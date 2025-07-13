@@ -15,7 +15,7 @@ export const typeDefs = gql`
   type Mutation {
     addTodo(title: String!): Todo!
     toggleTodo(id: ID!): Todo!
-    removeTodo(id: ID!): ID!
+    removeTodo(id: ID!): Todo!
   }
 `;
 
@@ -38,13 +38,20 @@ export const resolvers = {
 
     toggleTodo: (_: any, { id }: { id: string }) => {
       const todo = todos.find((t) => t.id === id);
-      if (todo) todo.completed = !todo.completed;
+      if (!todo) {
+        throw new Error(`Todo with id ${id} not found`);
+      }
+      todo.completed = !todo.completed;
       return todo;
     },
 
     removeTodo: (_: any, { id }: { id: string }) => {
+      const todo = todos.find((t) => t.id === id);
+      if (!todo) {
+        throw new Error(`Todo with id ${id} not found`);
+      }
       todos = todos.filter((t) => t.id !== id);
-      return id;
+      return todo;
     },
   },
 };
