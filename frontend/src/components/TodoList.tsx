@@ -47,8 +47,12 @@ export const TodoList = () => {
     try {
       await removeTodoMutation({ variables: { id } });
       removeTodoState(id);
-    } catch (error) {
-      console.error('Error removing todo:', error);
+    } catch (error: any) {
+      if (error.graphQLErrors?.length) {
+        console.error(error.graphQLErrors[0].message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
       alert('Failed to remove todo. Please try again.');
     }
   };
