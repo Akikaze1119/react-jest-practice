@@ -4,9 +4,11 @@ import { TodoItem } from './TodoItem';
 import { GET_TODOS } from '../graphql/queries';
 import { TOGGLE_TODO, REMOVE_TODO } from '../graphql/mutations';
 import { TTodo } from '../types/Todo';
+import { useFilterStore } from '../store/useFilterStore';
 
 export const TodoList = () => {
   const { loading, error, data, refetch } = useQuery(GET_TODOS);
+  const filter = useFilterStore((state) => state.filter);
 
   const [toggleTodoMutation] = useMutation(TOGGLE_TODO);
   const [removeTodoMutation] = useMutation(REMOVE_TODO);
@@ -44,9 +46,15 @@ export const TodoList = () => {
     }
   };
 
+  const filteredTodos = data.todos.filter((todo: TTodo) => {
+    if (filter === 'completed') return todo.completed;
+    if (filter === 'incomplete') return !todo.completed;
+    return true; // 'all' filter
+  });
+
   return (
     <ul>
-      {data.todos.map((todo: TTodo) => (
+      {filteredTodos.map((todo: TTodo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
