@@ -6,7 +6,8 @@
   "scripts": {
     "start": "parcel",
     "build": "parcel build",
-    "test": "jest --coverage"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
