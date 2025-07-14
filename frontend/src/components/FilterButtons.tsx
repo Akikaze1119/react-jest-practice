@@ -12,7 +12,7 @@ const FilterButtonsWrapper = styled.div`
 
 const FilterButton = styled.button`
   align-items: center;
-  background-color: #131313;
+  background-color: ${colors.black};
   color: #fff;
   border: #fff solid 0.5px;
   display: flex;
@@ -24,7 +24,7 @@ const FilterButton = styled.button`
 
   &:disabled {
     background-color: ${colors.primary};
-    color: #131313;
+    color: ${colors.black};
     border-color: ${colors.primary};
   }
 

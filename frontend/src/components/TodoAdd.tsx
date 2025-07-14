@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 
+import { colors } from '../styles';
 import { GET_TODOS } from '../graphql/queries';
 import { ADD_TODO } from '../graphql/mutations';
 
@@ -20,9 +21,9 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input<{ $invalid?: boolean }>`
-  background: #131313;
-  border: 2px solid ${({ $invalid }) => ($invalid ? 'red' : '#333')};
-  border-radius: 0.3rem;
+  background: ${colors.black};
+  border: 2px solid ${({ $invalid }) => ($invalid ? `${colors.red}` : '#333')};
+
   color: #fff;
   padding: 20px 24px;
   width: 100%;
@@ -38,12 +39,17 @@ const Button = styled.button`
   width: 8rem;
 
   &:hover {
-    background: #cecece;
+    background: ${colors.gray};
+  }
+
+  &:disabled {
+    background: ${colors.gray};
+    cursor: not-allowed;
   }
 `;
 
 const ErrorText = styled.p`
-  color: red;
+  color: ${colors.red};
   font-size: 0.8rem;
   margin: 0;
 `;
@@ -89,9 +95,7 @@ export const TodoAdd = () => {
           placeholder='New todo'
           $invalid={!!error}
         />
-        <Button onClick={handleAdd} disabled={!!error || !title.trim()}>
-          Add
-        </Button>
+        <Button onClick={handleAdd}>Add</Button>
       </InputWrapper>
       {error && <ErrorText>{error}</ErrorText>}
     </Container>
