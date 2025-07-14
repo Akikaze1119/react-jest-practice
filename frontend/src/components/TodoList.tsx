@@ -1,10 +1,31 @@
 import { useQuery, useMutation } from '@apollo/client';
+import styled from 'styled-components';
 
 import { TodoItem } from './TodoItem';
 import { GET_TODOS } from '../graphql/queries';
 import { TOGGLE_TODO, REMOVE_TODO } from '../graphql/mutations';
 import { TTodo } from '../types/Todo';
 import { useFilterStore } from '../store/useFilterStore';
+
+const Container = styled.ul`
+  width: 100%;
+  margin-top: 2rem;
+
+  background: #131313;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  min-height: 55vh;
+`;
+
+const Text = styled.p`
+  text-align: center;
+  font-size: 18px;
+`;
 
 export const TodoList = () => {
   const { loading, error, data, refetch } = useQuery(GET_TODOS);
@@ -13,8 +34,18 @@ export const TodoList = () => {
   const [toggleTodoMutation] = useMutation(TOGGLE_TODO);
   const [removeTodoMutation] = useMutation(REMOVE_TODO);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading)
+    return (
+      <Container>
+        <Text>Loading...</Text>
+      </Container>
+    );
+  if (error)
+    return (
+      <Container>
+        <Text>Error: {error.message}</Text>
+      </Container>
+    );
 
   const handleToggle = async (id: string) => {
     try {
@@ -53,15 +84,19 @@ export const TodoList = () => {
   });
 
   return (
-    <ul>
-      {filteredTodos.map((todo: TTodo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onToggle={() => handleToggle(todo.id)}
-          onRemove={() => handleRemove(todo.id)}
-        />
-      ))}
-    </ul>
+    <Container>
+      {filteredTodos.length === 0 ? (
+        <Text>No item</Text>
+      ) : (
+        filteredTodos.map((todo: TTodo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={() => handleToggle(todo.id)}
+            onRemove={() => handleRemove(todo.id)}
+          />
+        ))
+      )}
+    </Container>
   );
 };
