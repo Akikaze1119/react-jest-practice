@@ -1,28 +1,15 @@
-import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { TTodo } from '../types/Todo';
 import { TodoItem } from './TodoItem';
-import { useTodoStore } from '../store/useTodoStore';
 import { GET_TODOS } from '../graphql/queries';
 import { TOGGLE_TODO, REMOVE_TODO } from '../graphql/mutations';
+import { TTodo } from '../types/Todo';
 
 export const TodoList = () => {
-  const { loading, error, data } = useQuery(GET_TODOS);
-
-  const setTodos = useTodoStore((state) => state.setTodos);
-  const todos = useTodoStore((state) => state.todos);
-  const toggleTodoState = useTodoStore((state) => state.toggleTodo);
-  const removeTodoState = useTodoStore((state) => state.removeTodo);
+  const { loading, error, data, refetch } = useQuery(GET_TODOS);
 
   const [toggleTodoMutation] = useMutation(TOGGLE_TODO);
   const [removeTodoMutation] = useMutation(REMOVE_TODO);
-
-  useEffect(() => {
-    if (data && data.todos) {
-      setTodos(data.todos);
-    }
-  }, [data, setTodos]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -32,7 +19,7 @@ export const TodoList = () => {
       await toggleTodoMutation({
         variables: { id },
       });
-      toggleTodoState(id);
+      refetch();
     } catch (error: any) {
       if (error.graphQLErrors?.length) {
         console.error(error.graphQLErrors[0].message);
@@ -46,7 +33,7 @@ export const TodoList = () => {
   const handleRemove = async (id: string) => {
     try {
       await removeTodoMutation({ variables: { id } });
-      removeTodoState(id);
+      refetch();
     } catch (error: any) {
       if (error.graphQLErrors?.length) {
         console.error(error.graphQLErrors[0].message);
@@ -59,7 +46,7 @@ export const TodoList = () => {
 
   return (
     <ul>
-      {todos.map((todo) => (
+      {data.todos.map((todo: TTodo) => (
         <TodoItem
           key={todo.id}
           todo={todo}

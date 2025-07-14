@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { useTodoStore } from '../store/useTodoStore';
+import { useMutation, useQuery } from '@apollo/client';
+
+import { GET_TODOS } from '../graphql/queries';
 import { ADD_TODO } from '../graphql/mutations';
 
 export const TodoAdd = () => {
   const [title, setTitle] = useState('');
+  const { refetch } = useQuery(GET_TODOS);
   const [addTodoMutation] = useMutation(ADD_TODO);
-  const addTodoState = useTodoStore((state) => state.addTodo);
 
   const handleAdd = async () => {
     if (!title.trim()) return;
@@ -14,8 +15,9 @@ export const TodoAdd = () => {
     const { data } = await addTodoMutation({
       variables: { title },
     });
+    refetch();
+
     if (data && data.addTodo) {
-      addTodoState(data.addTodo);
       setTitle('');
     }
   };
