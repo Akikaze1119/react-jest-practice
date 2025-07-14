@@ -8,33 +8,34 @@ It demonstrates how to use GraphQL queries and mutations with Apollo, state mana
 ```bash
 git clone https://github.com/Akikaze1119/react-jest-practice.git
 ```
-### 2. Install dependencies:
-- 1. Frontend
+### 2. Start the Frontend project:
+- 1. Install dependencies:
 ```bash
 cd frontend
 npm install
 ```
-- 2. Backend(Server)
+- 2. Start the project:
+```
+npm start
+```
+
+### 3. Start the Backend(Server) project:
+- 1. Install dependencies <sub>(Move from `/frontend` to `/server` directory)</sub>:
 ```bash
 cd ../server
 npm install
 ```
-- 3. Roor directory
-```
-cd ..
-npm install
-```
 
-### 3. Start the project:
-```
-npm run dev
-```
-Make sure to run this script in the root directory
 
+- 2. Start the project:
+```
+npm start
+```
 
 ### Test URLs
 * Frontend: `http://localhost:1234`
 * Server: `http://localhost:4000/`
+**Make sure to run the backend and frontend servers concurrently during development.**
 
 ## Running Tests for React and Viewing Coverage
 **First, move to the frontend directory:**
