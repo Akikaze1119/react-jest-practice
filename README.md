@@ -4,22 +4,37 @@ This project is a simple Todo application built with React, Apollo Client, and G
 It demonstrates how to use GraphQL queries and mutations with Apollo, state management with Zustand, and component testing with Jest and React Testing Library.
 
 ## Setup Instructions
-
-1. Clone the repository:
+### 1. Clone the repository:
 ```bash
 git clone https://github.com/Akikaze1119/react-jest-practice.git
 ```
-2. Install dependencies:
+### 2. Install dependencies:
+- 1. Frontend
 ```bash
+cd frontend
 npm install
 ```
-3. Start the project:
+- 2. Backend(Server)
 ```bash
+cd ../server
+npm install
+```
+- 3. Roor directory
+```
+cd ..
+npm install
+```
+
+### 3. Start the project:
+```
 npm run dev
 ```
+Make sure to run this script in the root directory
+
+
 ### Test URLs
 * Frontend: `http://localhost:1234`
-* * Server: `http://localhost:4000/`
+* Server: `http://localhost:4000/`
 
 ## Running Tests for React and Viewing Coverage
 **First, move to the frontend directory:**
