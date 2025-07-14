@@ -35,13 +35,11 @@ npm start
 ### Test URLs
 * Frontend: `http://localhost:1234`
 * Server: `http://localhost:4000/`
-**Make sure to run the backend and frontend servers concurrently during development.**
+
+**⚠️ Make sure to run the backend and frontend servers concurrently during development.**
 
 ## Running Tests for React and Viewing Coverage
-**First, move to the frontend directory:**
-```bash
-cd ./frontend
-```
+**⚠️ First, Make sure you are in the `frontend` directory.**
 
 ◼︎ Run all tests:
 ```
