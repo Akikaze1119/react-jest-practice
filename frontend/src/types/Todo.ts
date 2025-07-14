@@ -1,5 +1,5 @@
 export type TTodo = {
-  id: number;
+  id: string;
   title: string;
   completed: boolean;
 };
