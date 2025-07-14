@@ -86,7 +86,7 @@ export const TodoList = () => {
   return (
     <Container>
       {filteredTodos.length === 0 ? (
-        <Text>No item</Text>
+        <Text>No todos found. Please add one!</Text>
       ) : (
         filteredTodos.map((todo: TTodo) => (
           <TodoItem
