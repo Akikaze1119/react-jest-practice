@@ -1,7 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
+import { redux } from 'zustand/middleware';
 
 export const colors = {
   primary: '#0ae47b',
+  red: '#c32c3e',
+  black: '#131313',
+  gray: '#cecece',
 };
 
 export const GlobalStyle = createGlobalStyle`

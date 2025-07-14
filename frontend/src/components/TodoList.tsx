@@ -6,12 +6,13 @@ import { GET_TODOS } from '../graphql/queries';
 import { TOGGLE_TODO, REMOVE_TODO } from '../graphql/mutations';
 import { TTodo } from '../types/Todo';
 import { useFilterStore } from '../store/useFilterStore';
+import { colors } from '../styles';
 
 const Container = styled.ul`
   width: 100%;
   margin-top: 2rem;
 
-  background: #131313;
+  background: ${colors.black};
   padding: 2rem;
   border-radius: 1rem;
 
