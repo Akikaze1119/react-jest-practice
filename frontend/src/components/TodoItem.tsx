@@ -39,6 +39,7 @@ export const TodoItem = ({ todo, onToggle, onRemove }: TProps) => {
           e.stopPropagation();
           onRemove();
         }}
+        aria-label='Delete'
       >
         <FiTrash2 color={'#fff'} size={20} />
       </DeleteButton>
