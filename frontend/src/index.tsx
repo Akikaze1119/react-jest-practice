@@ -4,6 +4,7 @@ import { StrictMode } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './apolloClient'; // Assuming you have an Apollo Client setup
 
+import './index.css';
 import { App } from './App';
 
 let container = document.getElementById('app')!;
