@@ -7,15 +7,21 @@ import { ADD_TODO } from '../graphql/mutations';
 
 const Container = styled.div`
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-top: 1rem;
   width: 100%;
   padding: 1rem;
 `;
 
-const Input = styled.input`
+const InputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const Input = styled.input<{ $invalid?: boolean }>`
   background: #131313;
-  border: none;
+  border: 2px solid ${({ $invalid }) => ($invalid ? 'red' : '#333')};
   border-radius: 0.3rem;
   color: #fff;
   padding: 20px 24px;
@@ -36,13 +42,29 @@ const Button = styled.button`
   }
 `;
 
+const ErrorText = styled.p`
+  color: red;
+  font-size: 0.8rem;
+  margin: 0;
+`;
+
 export const TodoAdd = () => {
   const [title, setTitle] = useState('');
+  const [error, setError] = useState('');
   const { refetch } = useQuery(GET_TODOS);
   const [addTodoMutation] = useMutation(ADD_TODO);
 
+  const validate = (value: string) => {
+    if (!value.trim()) return 'Please enter a todo.';
+    if (value.length > 50) return 'Todo must be 50 characters or less.';
+    if (/[^a-zA-Z0-9\s]/.test(value)) return 'Only letters, numbers, and spaces allowed.';
+    return '';
+  };
+
   const handleAdd = async () => {
-    if (!title.trim()) return;
+    const validationError = validate(title);
+    setError(validationError);
+    if (validationError) return;
 
     const { data } = await addTodoMutation({
       variables: { title },
@@ -56,13 +78,22 @@ export const TodoAdd = () => {
 
   return (
     <Container>
-      <Input
-        type='text'
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder='New todo'
-      />
-      <Button onClick={handleAdd}>Add</Button>
+      <InputWrapper>
+        <Input
+          type='text'
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setError('');
+          }}
+          placeholder='New todo'
+          $invalid={!!error}
+        />
+        <Button onClick={handleAdd} disabled={!!error || !title.trim()}>
+          Add
+        </Button>
+      </InputWrapper>
+      {error && <ErrorText>{error}</ErrorText>}
     </Container>
   );
 };
