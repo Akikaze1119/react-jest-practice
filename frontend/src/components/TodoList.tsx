@@ -72,6 +72,15 @@ export const TodoList = () => {
     [removeTodoMutation, refetch]
   );
 
+  const filteredTodos = useMemo(() => {
+    if (!data) return [];
+    return data.todos.filter((todo: TTodo) => {
+      if (filter === 'completed') return todo.completed;
+      if (filter === 'incomplete') return !todo.completed;
+      return true; // 'all' filter
+    });
+  }, [data, filter]);
+
   if (loading)
     return (
       <Container>
@@ -84,15 +93,6 @@ export const TodoList = () => {
         <Text>Error: {error.message}</Text>
       </Container>
     );
-
-  const filteredTodos = useMemo(() => {
-    if (!data) return [];
-    return data.todos.filter((todo: TTodo) => {
-      if (filter === 'completed') return todo.completed;
-      if (filter === 'incomplete') return !todo.completed;
-      return true; // 'all' filter
-    });
-  }, [data, filter]);
 
   return (
     <Container>
