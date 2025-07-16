@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 
@@ -78,11 +79,14 @@ export const TodoList = () => {
     }
   };
 
-  const filteredTodos = data.todos.filter((todo: TTodo) => {
-    if (filter === 'completed') return todo.completed;
-    if (filter === 'incomplete') return !todo.completed;
-    return true; // 'all' filter
-  });
+  const filteredTodos = useMemo(() => {
+    if (!data) return [];
+    return data.todos.filter((todo: TTodo) => {
+      if (filter === 'completed') return todo.completed;
+      if (filter === 'incomplete') return !todo.completed;
+      return true; // 'all' filter
+    });
+  }, [data, filter]);
 
   return (
     <Container>
