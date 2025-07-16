@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 
@@ -36,6 +36,42 @@ export const TodoList = () => {
   const [toggleTodoMutation] = useMutation(TOGGLE_TODO);
   const [removeTodoMutation] = useMutation(REMOVE_TODO);
 
+  const handleToggle = useCallback(
+    async (id: string) => {
+      try {
+        await toggleTodoMutation({
+          variables: { id },
+        });
+        refetch();
+      } catch (error: any) {
+        if (error.graphQLErrors?.length) {
+          console.error(error.graphQLErrors[0].message);
+        } else {
+          console.error('Unexpected error:', error);
+        }
+        alert('Failed to toggle todo. It may not exist.');
+      }
+    },
+    [toggleTodoMutation, refetch]
+  );
+
+  const handleRemove = useCallback(
+    async (id: string) => {
+      try {
+        await removeTodoMutation({ variables: { id } });
+        refetch();
+      } catch (error: any) {
+        if (error.graphQLErrors?.length) {
+          console.error(error.graphQLErrors[0].message);
+        } else {
+          console.error('Unexpected error:', error);
+        }
+        alert('Failed to remove todo. Please try again.');
+      }
+    },
+    [removeTodoMutation, refetch]
+  );
+
   if (loading)
     return (
       <Container>
@@ -48,36 +84,6 @@ export const TodoList = () => {
         <Text>Error: {error.message}</Text>
       </Container>
     );
-
-  const handleToggle = async (id: string) => {
-    try {
-      await toggleTodoMutation({
-        variables: { id },
-      });
-      refetch();
-    } catch (error: any) {
-      if (error.graphQLErrors?.length) {
-        console.error(error.graphQLErrors[0].message);
-      } else {
-        console.error('Unexpected error:', error);
-      }
-      alert('Failed to toggle todo. It may not exist.');
-    }
-  };
-
-  const handleRemove = async (id: string) => {
-    try {
-      await removeTodoMutation({ variables: { id } });
-      refetch();
-    } catch (error: any) {
-      if (error.graphQLErrors?.length) {
-        console.error(error.graphQLErrors[0].message);
-      } else {
-        console.error('Unexpected error:', error);
-      }
-      alert('Failed to remove todo. Please try again.');
-    }
-  };
 
   const filteredTodos = useMemo(() => {
     if (!data) return [];
